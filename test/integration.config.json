@@ -1,0 +1,46 @@
+{
+  "routes": {
+    "/test": {
+      "response": {
+        "type": "static",
+        "status": 200,
+        "body": "{\"status\":\"OK\"}",
+        "headers": {
+          "content-type": "application/json"
+        }
+      },
+      "forward": {
+        "target": "http://localhost"
+      }
+    },
+    "/test/*": {
+      "response": {
+        "type": "static",
+        "status": 201,
+        "body": null,
+        "headers": {
+          "content-type": "application/json"
+        }
+      },
+      "forward": {
+        "target": "http://localhost"
+      }
+    },
+    "/random": {
+      "response": {
+        "type": "random-client"
+      },
+      "forward": {
+        "target": "http://localhost"
+      }
+    },
+    "/first": {
+      "response": {
+        "type": "first-client"
+      },
+      "forward": {
+        "target": "http://localhost"
+      }
+    }
+  }
+}
