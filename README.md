@@ -4,6 +4,10 @@
 
 A tool for sharing WebHooks between multiple dev environments.
 
+## Install
+
+Run `npm i -g hookshare`
+
 ## The Problem
 
 When building WebHook integration with a 3rd party services, configuring a proxy to forward requests to a local environment, and managing multiple engineers' individual environments simultaneously becomes very cumbersome.
@@ -12,15 +16,11 @@ When building WebHook integration with a 3rd party services, configuring a proxy
 
 A relay service that is accessible on the public internet that receives WebHook events and forwards them to multiple recipients on private networks.
 
-This can be challenging because it is not possible to send multiple responses to one HTTP request. HookShare aims to solve this by being flexible and providing many options for how you want to handle the response to WebHooks.
-
 ![HookShare architecture](./architecture.svg)
 
+This is an interesting problem because it is impossible to send multiple responses to one HTTP request. HookShare aims to solve this by being flexible and providing several different options to handle this depending on the use cases.
+
 ## Getting started
-
-### Install
-
-Run `npm i -g hookshare`
 
 There is two major components to HookShare, a Relay and a Client.
 
