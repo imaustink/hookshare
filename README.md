@@ -45,7 +45,7 @@ The Relay is accessible from the public internet and receives requests from 3rd 
         }
       },
       "forward": {
-        "target": "http://localhost/test",
+        "target": "https://localhost",
         "sslVerification": false
       }
     }
