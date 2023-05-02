@@ -53,14 +53,14 @@ The Relay is accessible from the public internet and receives requests from 3rd 
 }
 ```
 
-#### Environment Variables
+#### Relay Environment Variables
 
 - `HTTP_PORT`: The port to listen on for HTTPS. Defaults to `"8080"`.
 - `LOG_LEVEL`: The level of details logged. Defaults to `"warn"`.
 - `CONFIG_PATH`: The path to a config file. Defaults to `"config.json"`.
 - `BROADCAST_RESPONSE_TIMEOUT_MS`: How long to wait before clients to respond to messages. Defaults to `"5000"`.
 
-#### Startup
+#### Relay Startup
 
 Run `hs-relay`
 
@@ -68,11 +68,11 @@ Run `hs-relay`
 
 The Client connects to a target Relay and "replays" any requests received by the Relay.
 
-#### Environment Variables
+#### Client Environment Variables
 
 - `RELAY_HOSTNAME`: The full hostname where the Relay server is running. Defaults to `ws://localhost:8080`.
 
-#### Startup
+#### Client Startup
 
 Run `hs-client`
 
@@ -87,9 +87,20 @@ Params
 - `body`: body to use for static response
 - `headers`: headers to use for static response
 
-When a `static` response is defined in the configuration, the Relay will respond with the details define in the configuration and then forwards the request details to all connected Clients.
+When a `static` response is defined in the configuration, the Relay will forward the request details to all connected Clients and respond with the details defined in the configuration.
 
 This can be useful when the response to the WebHook doesn't need to be dynamic.
+
+#### successful-client
+
+Params
+
+- `type=successful-client`
+- `expectedStatus`: status code to match for successful response
+
+When a `successful-client` response is defined in the configuration, the Relay will forward the request details to all connected Clients and respond with the details from the first client to respond with a status matching `expectedStatus`. All other client responses will be ignored.
+
+This can be useful when working with on larger teams where each engineer might have their own local datastore. In theory, only the relevant will know about the given resource and thus respond successfully.
 
 #### random-client
 

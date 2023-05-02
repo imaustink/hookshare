@@ -41,6 +41,15 @@
       "forward": {
         "target": "http://localhost"
       }
+    },
+    "/success": {
+      "response": {
+        "type": "successful-client",
+        "expectedStatus": 201
+      },
+      "forward": {
+        "target": "http://localhost"
+      }
     }
   }
 }

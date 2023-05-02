@@ -56,7 +56,36 @@ export class RandomClientResponder extends BaseResponder {
   }
 }
 
+export class SuccessfulClient extends BaseResponder {
+  constructor(...args) {
+    super(...args);
+    if (!this.responses.length) {
+      throw createError(502);
+    }
+    this.#success = this.responses.find(({ status }) => {
+      return status === this.config.expectedStatus;
+    });
+  }
+
+  #success = null;
+
+  setBody(ctx) {
+    ctx.body = this.#success.data;
+  }
+
+  setStatus(ctx) {
+    ctx.status = this.#success.status;
+  }
+
+  setHeaders(ctx) {
+    Object.entries(this.#success.headers).forEach(([key, value]) => {
+      ctx.set(key, value);
+    });
+  }
+}
+
 export const responders = {
   static: StaticResponder,
   'random-client': RandomClientResponder,
+  'successful-client': SuccessfulClient,
 };

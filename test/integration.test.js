@@ -104,3 +104,29 @@ describe('random-client response', () => {
     });
   });
 });
+
+describe('successful-client response', () => {
+  const body = { foo: 'bar' };
+  // Setup nock to assert egress from the client
+  const scopeRandomClient = nock(target).post('/success').reply(201, body);
+  test('should forward request and respond', async () => {
+    // Emulate an incoming WebHook
+    await request.post('/success').expect(201, body);
+
+    // Assert that we received the forwarded request
+    scopeRandomClient.done();
+
+    // Wait for the client to respond with response details
+    const result = await responsePromise;
+
+    // Assert response details
+    expect(result.payload).toEqual({
+      data: body,
+      headers: {
+        'content-type': 'application/json',
+      },
+      status: 201,
+      statusText: null,
+    });
+  });
+});
