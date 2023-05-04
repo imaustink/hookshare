@@ -26,7 +26,7 @@ export async function initiateEgressRequest(options) {
   const response = await axios({
     url,
     headers,
-    body,
+    data: body,
     method,
     ...maybeDisableSslVerification,
   });
