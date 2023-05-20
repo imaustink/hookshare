@@ -38,11 +38,18 @@ beforeEach(() => {
 
 describe('static response', () => {
   // Setup nock to assert egress from the client
-  const scopeSmokeTest = nock(target).post('/test').reply(200);
-  const scopeParamTest = nock(target).post('/test/some-identifier').reply(200);
+  const scopeSmokeTest = nock(target)
+    .post('/test', { event: 'update' })
+    .reply(200);
+  const scopeParamTest = nock(target)
+    .post('/test/some-identifier', { event: 'update' })
+    .reply(200);
   test('should forward request and respond', async () => {
     // Emulate an incoming WebHook
-    await request.post('/test').expect(200, { status: 'OK' });
+    await request
+      .post('/test')
+      .send({ event: 'update' })
+      .expect(200, { status: 'OK' });
 
     // Assert that we received the forwarded request
     scopeSmokeTest.done();
@@ -61,7 +68,10 @@ describe('static response', () => {
 
   test('should forward path params', async () => {
     // Emulate an incoming WebHook
-    await request.post('/test/some-identifier').expect(201);
+    await request
+      .post('/test/some-identifier')
+      .send({ event: 'update' })
+      .expect(201);
 
     // Assert that we received the forwarded request
     scopeParamTest.done();
@@ -108,10 +118,12 @@ describe('random-client response', () => {
 describe('successful-client response', () => {
   const body = { foo: 'bar' };
   // Setup nock to assert egress from the client
-  const scopeRandomClient = nock(target).post('/success').reply(201, body);
+  const scopeRandomClient = nock(target)
+    .post('/success', { event: 'update' })
+    .reply(201, body);
   test('should forward request and respond', async () => {
     // Emulate an incoming WebHook
-    await request.post('/success').expect(201, body);
+    await request.post('/success').send({ event: 'update' }).expect(201, body);
 
     // Assert that we received the forwarded request
     scopeRandomClient.done();
